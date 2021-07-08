@@ -11,7 +11,7 @@ token="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"
 
 msg = str(sys.argv[1])
 g = Github(token)
-repoRasp = g.get_repo("TaraLemaire/LogRaspberry")
+repoRasp = g.get_repo("TaraLemaire/Super-Project-Ajc-Recruitment-Toward-Ausy")
 
 #print("Connect to repository :")
 #print(repoRasp)
