@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import sys, os, serial, time
+from github import Github, GithubException
+from pprint import pprint
+from datetime import datetime
+
+token="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"
+
+
+msg = str(sys.argv[1])
+g = Github(token)
+repoRasp = g.get_repo("TaraLemaire/LogRaspberry")
+
+#print("Connect to repository :")
+#print(repoRasp)
+
+file = repoRasp.get_contents("events.log")
+oldContent = file.decoded_content.decode()
+date=datetime.today().strftime('%Y-%m-%d_%H:%M:%S/')
+newContent = oldContent + date + msg + "\n"
+repoRasp.update_file("events.log","Commit from RaspberryPI",newContent,file.sha,branch="main")
+print(date + msg)
+

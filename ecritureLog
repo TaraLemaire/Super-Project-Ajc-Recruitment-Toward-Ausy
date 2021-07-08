@@ -1,0 +1,12 @@
+#!/usr/bin/bash
+
+#Ouverture du fichier log
+file="./log" 
+
+#Collecte la date
+now="$(date +'%Y-%m-%d %H:%M:%S')"
+echo "$now $1"
+echo "$now $1" >> $file
+
+
+

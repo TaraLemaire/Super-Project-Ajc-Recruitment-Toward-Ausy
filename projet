@@ -1,0 +1,70 @@
+#!/usr/bin/python3
+# coding: utf-8
+
+import os
+import serial 
+import RPi.GPIO as GPIO
+import time
+
+#Setup du capteur de proximité
+GPIO.setmode(GPIO.BOARD)
+GPIO_PIR = 38
+GPIO.setup(GPIO_PIR, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+
+#Definition de la console dans laquelle ecrire
+if __name__ == '__main__':
+	ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+	ser.flush()
+
+soundSensorPreviousState = 1
+gpioPreviousState = 1
+detectionTime = time.time()
+if ser.isOpen():
+	try:
+		ser.write(str.encode("R")) #Envoie R (Ready) à Arduino
+		print("Start of the Program")
+		while True :
+			if GPIO.input(GPIO_PIR) == 0 and gpioPreviousState == 1:
+			# Mouvement détecté 
+				gpioPreviousState = 0
+				detectionTime = time.time()
+				ser.write(str.encode("M")) #Envoie info à Arduino
+				os.system("./LinkRaspGit Mouvement_detecte")
+				time.sleep(0.04)
+
+
+			elif GPIO.input(GPIO_PIR) == 1 and gpioPreviousState == 0:
+			# Mouvement terminé
+				gpioPreviousState = 1
+				ser.write(str.encode("N")) #Envoie info à Arduino
+				duree = round(time.time()-detectionTime, 3)
+				os.system("./LinkRaspGit Mouvement_termine_" + str(duree) + "s")
+				time.sleep(0.04)
+
+			#Lis le message envoyé par Arduino
+			msgArduino = ser.read(1)
+			if msgArduino == b'S':
+			#Son détecté
+				if soundSensorPreviousState == 1:
+					detectionTime = time.time()
+					os.system("./LinkRaspGit Son_detecte")
+					time.sleep(0.04)
+					soundSensorPreviousState = 0	
+				ser.write(str.encode("U")) #Répond à Arduino
+				ser.flushInput()
+	
+			elif msgArduino == b'T' and soundSensorPreviousState == 0:
+			# Son terminé
+				duree = round(time.time() - detectionTime, 3)
+				os.system("./LinkRaspGit Son_termine_" + str(duree) + "s")
+				time.sleep(0.04)
+				ser.flushInput()
+				soundSensorPreviousState = 1
+
+
+	except KeyboardInterrupt:
+		GPIO.cleanup()
+		ser.write(str.encode("Q")) #Envoie Q (Quit) à Arduino
+		ser.flush()
+		print("Bye bye")
