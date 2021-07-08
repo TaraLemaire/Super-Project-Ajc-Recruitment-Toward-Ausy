@@ -6,7 +6,8 @@ from github import Github, GithubException
 from pprint import pprint
 from datetime import datetime
 
-token="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"
+tokenFile=open("token", "r")
+token=tokenFile.readline().rstrip("\n")
 
 
 msg = str(sys.argv[1])
