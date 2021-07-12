@@ -2,7 +2,6 @@
 Library         GPIOLibProjet.py
 Library		sendToSerial.py
 Library		openCloseProjet.py
-Library		Process.py
 
 Suite Setup		Start Test
 Suite Teardown		Terminate Test
@@ -47,11 +46,8 @@ TestCase2 Detection Imbrique
 
 *** Keywords ***
 Start Test
-	Start Process		projet	
-	Sleep 			1s
 	setModeBoard
 	setPinOut	${GPIO_PIN}
 
 Terminate Test
-	Terminate Process	projet
-	Sleep			1s
+	closeProjet
