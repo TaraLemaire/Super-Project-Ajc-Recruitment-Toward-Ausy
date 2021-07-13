@@ -15,9 +15,15 @@ ${GPIO_PIN}	${38}
 TestCase1 Deroulement Normal
         Log To Console		Mouvement Seul           
         setOutput       	${GPIO_PIN}	${0}	#Mouvement detecte
-	Sleep			10s
+	Sleep			1s
+	${result}=		readPin		${GPIO_PIN}
+	Should Be Equal		${result}	${0}
+	Sleep			9s
 	setOutput		${GPIO_PIN}	${1}	#Mouvement termine 10s
-	Sleep			3s		#Laisse du temps pour envoyer au Log
+	Sleep			1s		#Laisse du temps pour envoyer au Log
+	${result}=		readPin		${GPIO_PIN}
+	Should Be Equal		${result}	${1}
+	Sleep			2s		#Laisse du temps pour envoyer au Log
 
 	Log To Console		Son Seul	
 	sendToSerial		S		#Son detecte	
@@ -33,7 +39,10 @@ TestCase2 Detection Imbrique
 
 	Log To Console		Mouvement Debut
 	setOutput		${GPIO_PIN}	${0}	#Mouvement detecte
-	Sleep			5s
+	Sleep			1s
+	${result}=              readPin         ${GPIO_PIN}
+        Should Be Equal         ${result}       ${0}
+	Sleep			4s
 
 	Log To Console		Son Fin
 	sendToSerial		T		#Son termine 10s
@@ -41,7 +50,10 @@ TestCase2 Detection Imbrique
 
 	Log To Console		Mouvement Fin
 	setOutput		${GPIO_PIN}	${1}	#Mouvement termine 10s
-	Sleep			3s
+	Sleep			1s
+	${result}=              readPin         ${GPIO_PIN}
+        Should Be Equal         ${result}       ${1}
+	Sleep			2s
 
 
 *** Keywords ***

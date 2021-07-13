@@ -9,6 +9,10 @@ def setPinOut(pin):
 def setOutput(pin, val):
         GPIO.output(pin, val)
 
+def readPin(pin):
+	return GPIO.input(pin)
+
+
 def afficher(var):
         print(var)
 
