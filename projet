@@ -24,7 +24,7 @@ detectionTimeSound = time.time()
 if ser.isOpen():
 	try:
 		ser.write(str.encode("R")) #Envoie R (Ready) à Arduino
-		ser.write(str.encode("Start of the Program"))
+		print("Start of the Program")
 		while True :
 			if GPIO.input(GPIO_PIR) == 0 and gpioPreviousState == 1:
 			# Mouvement détecté 
@@ -68,4 +68,4 @@ if ser.isOpen():
 		GPIO.cleanup()
 		ser.write(str.encode("Q")) #Envoie Q (Quit) à Arduino
 		ser.flush()
-		ser.write(str.encode("Bye bye"))
+		print("Bye bye")
