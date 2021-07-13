@@ -12,7 +12,7 @@ token=tokenFile.readline().rstrip("\n")
 
 msg = str(sys.argv[1])
 g = Github(token)
-repoRasp = g.get_repo("TaraLemaire/Super-Project-Ajc-Recruitment-Toward-Ausy")
+repoRasp = g.get_repo("TaraLemaire/Super-Project-Ajc-Recruitment-Toward-Ausy/log")
 
 #print("Connect to repository :")
 #print(repoRasp)
