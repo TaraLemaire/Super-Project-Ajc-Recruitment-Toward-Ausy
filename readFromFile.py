@@ -1,5 +1,5 @@
 def readFromFile(lineNb):
-	file = open("test.file", "r")
-	for i, line in enumerate(file):
-		if i == lineNb:
-			return file.readline()	
+	with open("test.file") as file:
+		for i, line in enumerate(file):
+			if i == lineNb:
+				return line	
