@@ -1,41 +1,43 @@
 *** Settings ***
-Library         GPIOLibProjet.py
-Library		sendToSerial.py
-Library		openCloseProjet.py
 
-Suite Setup		Start Test
-Suite Teardown		Terminate Test
+Library			readFromFile.py	
 
 *** Variables ***
 
-${GPIO_PIN}	${38}
+${MoveDet}	Mouvement_detecte
+${MoveFin}	Mouvement_termine
+${SonDet}	Son_detecte
+${SonFin}	Son_termine
 
 *** Test Cases ***
 
 TestCase1 Deroulement Normal
-        Log To Console		Mouvement Seul           
-        setOutput       	${GPIO_PIN}	${0}	#Mouvement detecte
-	Sleep			1s
-	${result}=		readPin		${GPIO_PIN}
-	Should Be Equal		${result}	${0}
-	Sleep			9s
-	setOutput		${GPIO_PIN}	${1}	#Mouvement termine 10s
-	Sleep			1s		#Laisse du temps pour envoyer au Log
-	${result}=		readPin		${GPIO_PIN}
-	Should Be Equal		${result}	${1}
-	Sleep			2s		#Laisse du temps pour envoyer au Log
+        Log To Console		Vérification des logs en fonctionnement normal     
+	${line}=		readFromFile		${0}
+	Should Contain		${line}			${MoveDet}
 
-	Log To Console		Son Seul	
-	sendToSerial		S		#Son detecte	
-	Sleep			10s
-	sendToSerial		T		#Son termine 10s	
-	Sleep			3s		#Laisse du temps pour le prochain test
+        ${line}=                readFromFile            ${1}
+        Should Contain          ${line}                 ${MoveFin}
+
+        ${line}=                readFromFile            ${2}
+        Should Contain          ${line}                 ${SonDet}
+
+        ${line}=                readFromFile            ${3}
+        Should Contain          ${line}                 ${SonFin}
+
+TestCase2 Detection Imbriquée
+	Log To Console		Vérification des logs en fonctionnement imbriqué
+        ${line}=                readFromFile            ${4}
+        Should Contain          ${line}                 ${SonDet}
+
+        ${line}=                readFromFile            ${5}
+        Should Contain          ${line}                 ${MoveDet}
+
+        ${line}=                readFromFile            ${6}
+        Should Contain          ${line}                 ${SonFin}
+
+        ${line}=                readFromFile            ${7}
+        Should Contain          ${line}                 ${MoveFin}
 
 
-*** Keywords ***
-Start Test
-	setModeBoard
-	setPinOut	${GPIO_PIN}
 
-Terminate Test
-	closeProjet
