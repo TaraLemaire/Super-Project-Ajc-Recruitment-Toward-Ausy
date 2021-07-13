@@ -12,15 +12,15 @@ token=tokenFile.readline().rstrip("\n")
 
 msg = str(sys.argv[1])
 g = Github(token)
-repoRasp = g.get_repo("TaraLemaire/Super-Project-Ajc-Recruitment-Toward-Ausy/log")
+repoRasp = g.get_repo("TaraLemaire/Super-Project-Ajc-Recruitment-Toward-Ausy")
 
 #print("Connect to repository :")
 #print(repoRasp)
 
-file = repoRasp.get_contents("events.log")
+file = repoRasp.get_contents("/log/events.log")
 oldContent = file.decoded_content.decode()
 date=datetime.today().strftime('%Y-%m-%d_%H:%M:%S/')
 newContent = oldContent + date + msg + "\n"
-repoRasp.update_file("events.log","Commit from RaspberryPI",newContent,file.sha,branch="main")
+repoRasp.update_file("/log/events.log","Commit from RaspberryPI",newContent,file.sha,branch="main")
 print(date + msg)
 
