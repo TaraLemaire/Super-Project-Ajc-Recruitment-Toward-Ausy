@@ -21,6 +21,6 @@ file = repoRasp.get_contents("/log/events.log")
 oldContent = file.decoded_content.decode()
 date=datetime.today().strftime('%Y-%m-%d_%H:%M:%S/')
 newContent = oldContent + date + msg + "\n"
-repoRasp.update_file("/log/events.log","Commit from RaspberryPI",newContent,file.sha,branch="main")
+repoRasp.update_file("log/events.log","Commit from RaspberryPI",newContent,file.sha,branch="main")
 print(date + msg)
 
