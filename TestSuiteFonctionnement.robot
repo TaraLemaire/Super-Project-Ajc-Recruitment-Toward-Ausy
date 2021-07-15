@@ -62,4 +62,5 @@ Start Test
 	setPinOut	${GPIO_PIN}
 
 Terminate Test
+	sendToSerial		Q		#Termine le programme
 	closeProjet

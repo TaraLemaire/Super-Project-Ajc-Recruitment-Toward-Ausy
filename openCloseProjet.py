@@ -6,7 +6,7 @@ def openProjet():
 def closeProjet():
 	os.system('echo ALLO')
 	os.system('echo $(ps -e | grep projet | cut -d" " -f1)')
-	os.system('sudo kill -SIGINT $(ps -e | grep projet | cut -d" " -f1)')
+	os.system('sudo kill -9 $(ps -e | grep projet | cut -d" " -f1)')
 	os.system('echo $(ps -e | grep projet | cut -d" " -f1)')
 
 
